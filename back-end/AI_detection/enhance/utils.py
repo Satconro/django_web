@@ -1,11 +1,12 @@
 import torch
-from model import Enhancement_Encoder, Enhancement_Decoder
+from .model import Enhancement_Encoder, Enhancement_Decoder
 
 
 def load_checkpoint(model, checkpoint_file, device):
     print("=> Loading checkpoint from {}".format(checkpoint_file))
     checkpoint = torch.load(checkpoint_file, map_location=device)
     model.load_state_dict(checkpoint)
+
 
 # 转换model+optimizer的存储为model
 def load_checkpoint(model, checkpoint_file, device):

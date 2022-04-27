@@ -14,10 +14,10 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/back-end/AI_detection/enhance/weights" />
       <excludeFolder url="file://$MODULE_DIR$/back-end/AI_detection/yolov5/weights" />
+      <excludeFolder url="file://$MODULE_DIR$/back-end/AI_detection/weights" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.7 (env1)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.7.7 (sftp://lsm@c416.ilisa.team:2100/home/lsm/anaconda3/envs/pytorch1.10/bin/python)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">

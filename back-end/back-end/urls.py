@@ -1,4 +1,4 @@
-"""django_web URL Configuration
+"""back-end URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -19,14 +19,20 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
+import os
+import sys
+from pathlib import Path
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.append(str(BASE_DIR))  # add ROOT to PATH
 from app1 import views as app1_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', app1_views.image_upload_view),
-    path('api/upload', app1_views.image_upload_view)
-    # path('')
-    # path('',TemplateView.as_view(template_name="index.html")), # 路由到vue的index.html
+    path('api/upload', app1_views.image_upload_view),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

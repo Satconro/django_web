@@ -1,6 +1,15 @@
-import os
+import sys
 from pathlib import Path
+
+
+# 将包的根路径导入sys.path
+FILE = Path(__file__).resolve()
+ROOT = FILE.parent.parent  # YOLOv5 root directory
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))  # add ROOT to PATH
+
 import torch
+import torch.nn as nn
 import numpy as np
 
 from models.experimental import attempt_load
@@ -13,21 +22,24 @@ from random import randint
 
 class Detector(object):
 
-    def __init__(self):
+    def __init__(self, device, weights):
         self.m = None  # Model
         self.names = None  # Class names
         self.colors = None  # Box colors
         self.img_size = 640
         self.threshold = 0.4
         self.max_frame = 160
-        self.device = select_device('0' if torch.cuda.is_available() else 'cpu')
+        self.device = device
+        self.weights = weights
         self.init_model()
 
-    def init_model(self, weights='weights/best.pt'):
-        model = attempt_load(weights, map_location=self.device)
+    def init_model(self):
+        model = attempt_load(self.weights, map_location=self.device)
         model.to(self.device).eval()
         # model.half()
-        model.float()
+        # for layer in model.modules():
+        #     if isinstance(layer, nn.BatchNorm2d):
+        #         layer.float()
         self.m = model
         self.names = model.module.names if hasattr(
             model, 'module') else model.names
@@ -43,6 +55,7 @@ class Detector(object):
         img = np.ascontiguousarray(img)
         img = torch.from_numpy(img).to(self.device)
         img = img.float()
+        # img = img.half()
         img /= 255.0  # 图像归一化
         if img.ndimension() == 3:
             img = img.unsqueeze(0)
@@ -94,5 +107,5 @@ class Detector(object):
                         x2 - x1, y2 - y1), np.round(float(conf), 3)]
 
         im = self.plot_bboxes(im, pred_boxes)
+        torch.cuda.empty_cache()
         return im, image_info
-
